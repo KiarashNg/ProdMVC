@@ -1,9 +1,9 @@
 ﻿@model ProdMVC.Models.Product
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "افزودن محصول";
 }
 
-<h2>افزودن محصول جدید</h2>
+<h2 style="font-family:SOGAND">افزودن محصول جدید</h2>
 
 @using (Html.BeginForm())
 {
@@ -31,7 +31,8 @@
         @Html.ValidationMessageFor(x => x.Description)
     </div>
     <br />
-    <div class="form-group">
+    <div class="form-group" style="font-family:SOGAND;">
         <input type="submit" value="ثبت محصول" class="btn btn-primary"/>
+        @Html.ActionLink("بازگشت به لیست محصولات", "Index", "Product", new { name = ""}, new { @class = "btn btn-info" })
     </div>
 }

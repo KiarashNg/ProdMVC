@@ -1,0 +1,10 @@
+﻿@model IEnumerable<ProdMVC.Models.Country>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            @Html.DisplayFor(x => item.Name)
+        </li>
+    }
+</ul>

@@ -104,6 +104,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\SOGAND.TTF" />
+    <Content Include="fonts\B KOODAK BOLD.TTF" />
+    <Content Include="fonts\B MAJID SHADOW.TTF" />
+    <Content Include="fonts\B SINA BOLD.TTF" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -154,6 +157,10 @@
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\CategoryPartial.cshtml" />
+    <Content Include="Views\Product\CompanyPartial.cshtml" />
+    <Content Include="Views\Product\CountryPartial.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,55 +1,211 @@
 ﻿@model List<ProdMVC.Models.Product>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "لیست محصولات";
 }
 
-<h2>لیست محصولات</h2>
+@section Scripts
+    {
+
+    <script>
+        function removeProduct(Id) {
+            var confirmation = confirm("آیا از حذف این محصول اطمینان حاصل کرده اید؟");
+
+            if (confirmation) {
+                $.ajax(
+                    {
+                        url: '/Product/Remove',
+                        data: { Id: Id }
+                    }).done(function (result) {
+                        if (result.isOk) {
+                            $('.' + Id).remove();
+                        }
+                    });
+            }
+        }
+    </script>
+
+    <script>
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchCount = 0;
+            table = document.getElementById("productTable");
+            switching = true;
+            dir = "asc";
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < rows.length - 1; i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementByTagName("TD")[n];
+                    y = rows[i].getElementByTagName("TD")[n];
+
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchCount++;
+                } else {
+                    if (switchCount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function likeDislike(x) {
+            x.classList.toggle("fa-thumbs-down");
+        }
+    </script>
+
+    <script>
+        function openPartial(evt, partialName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementById("tabcontent");
+
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            tablinks = document.getElementsByClassName("tablinks");
+
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            document.getElementById(partialName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+/**/</script>
+
+}
+
+<h2 style="font-family:SOGAND">لیست محصولات</h2>
+
+<p>
+    جهت مرتب سازی محصولات بر هر اساسی که می خواهید، روی نام ستون مربوطه کلیک نمایید!
+</p>
 
 <div>
-    <table class="table table-hover">
-        <tr>
-            <th>
+    <table id="productTable" class="table table-hover table-striped table-responsive">
+        <tr style="font-family:'B Sina'">
+            <th onclick="sortTable(0);" style="text-align:center" ;>
                 @Html.DisplayNameFor(x => x.FirstOrDefault().CategoryId)
             </th>
-            <th>
+            <th onclick="sortTable(1)" style="text-align:center" ;>
                 @Html.DisplayNameFor(x => x.FirstOrDefault().CompanyId)
             </th>
-            <th>
-                @Html.DisplayNameFor(x => x.FirstOrDefault().CompanyId)
-            </th>
-            <th>
+            <th onclick="sortTable(2)" style="text-align:center" ;>
                 @Html.DisplayNameFor(x => x.FirstOrDefault().ModelName)
             </th>
-            <th>
+            <th onclick="sortTable(3)" style="text-align:center" ;>
                 @Html.DisplayNameFor(x => x.FirstOrDefault().Description)
             </th>
-            <th>
-                @Html.ActionLink("افزودن محصول", "Create", "Product", new { name = ""}, new { @class = "btn btn-info"})
+            <th style="text-align:center" ;>
+                محبوبیت
+            </th>
+            <th style="text-align:center; font-family:SOGAND;">
+                @Html.ActionLink("افزودن محصول جدید", "Create", "Product", new { name = "" }, new { @class = "btn btn-primary" })
             </th>
         </tr>
 
 
         @foreach (var item in Model)
         {
-    <tr class="@item.Id">
-        <td>
-            @item.Category.Name
-        </td>
-        <td>
-            @item.Company.PersianName
-        </td>
-        <td>
-            @item.Company.EnglishName
-        </td>
-        <td>
-            @item.ModelName
-        </td>
-        <td>
-            @item.Description
-        </td>
-        
-    </tr>
+            <tr class="@item.Id">
+                <td style="text-align:center" ;>
+                    @item.Category.Name
+                </td>
+                <td style="text-align:center" ;>
+                    @item.Company.PersianName
+                    /
+                    @item.Company.EnglishName
+                </td>
+                <td style="text-align:center" ;>
+                    @item.ModelName
+                </td>
+                <td style="text-align:center" ;>
+                    @item.Description
+                </td>
+                <td style="text-align:center">
+                    <i onclick="likeDislike(this)" class="fa fa-thumbs-up"></i>
+                </td>
+                <td style="text-align:center; font-family: SOGAND;" ;>
+                    @Html.ActionLink("ویرایش", "Edit", "Product", new { Id = item.Id }, new { @class = "btn btn-success" })
+                    @*Html.ActionLink("حذف", "Delete", "Product", new { Id = item.Id }, new { @class = "btn btn-danger", OnClick = "return confirm('آیا از حذف این محصول اطمینان حاصل کرده اید؟!');" })*@
+                    @Html.ActionLink("جزئیات", "Details", "Product", new { Id = item.Id }, new { @class = "btn btn-info" })
+                    <button id="std-del-btn" class="btn btn-danger" onclick="removeProduct('@item.Id')">حذف</button>
+                </td>
+
+            </tr>
         }
     </table>
 </div>
+<div class="col-lg-4 col-md-4 col-sm-12" style="border:ridge">
+    <p style="font-family: SOGAND; font-size:medium">
+        تمامی دسته بندی ها:
+    </p>
+    @{
+        Html.RenderAction("CategoryPartial");
+    }
+</div>
+<div class="col-lg-4 col-md-4 col-sm-12" style="border:ridge">
+    <p style="font-family: SOGAND; font-size:medium">
+        تمامی شرکت های تولیدکننده:
+    </p>
+    @{
+        Html.RenderAction("CompanyPartial");
+    }
+</div>
+<div class="col-lg-4 col-md-4 col-sm-12" style="border:ridge">
+    <p style="font-family: SOGAND; font-size:medium">
+        تمامی کشورهای تولیدکننده:
+    </p>
+    @{
+        Html.RenderAction("CountryPartial");
+    }
+</div>
 
+<div class="tab">
+    <button class="tablinks" onmouseover="openPartial(event, 'Categories')">دسته بندی ها</button>
+    <button class="tablinks" onmouseover="openPartial(event, 'Companies')">شرکت ها</button>
+    <button class="tablinks" onmouseover="openPartial(event, 'Countries')">کشورها</button>
+</div>
+
+<div id="Categories" class="tabcontent">
+    <h3>دسته بندی ها</h3>
+    @{
+        Html.RenderAction("CategoryPartial");
+    }
+</div>
+
+<div id="Companies" class="tabcontent">
+    <h3>شرکت ها</h3>
+    @{
+        Html.RenderAction("CompanyPartial");
+    }
+</div>
+
+<div id="Countries" class="tabcontent">
+    <h3>کشورها</h3>
+    @{
+        Html.RenderAction("CountryPartial");
+    }
+</div>
+
+<div class="clearfix"></div>

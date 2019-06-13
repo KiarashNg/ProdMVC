@@ -77,7 +77,7 @@ namespace ProdMVC.Controllers
             var selectList1 = new SelectList(Companies, "Id", "PersianName");
             ViewBag.Companies = selectList1;
 
-            return View();
+            return View(Entity);
         }
 
         [HttpPost]
@@ -112,6 +112,51 @@ namespace ProdMVC.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Remove(int Id)
+        {
+            var Entity = db.Products.FirstOrDefault(x => x.Id == Id);
+
+            if(Entity == null)
+            {
+                ViewBag.Message = @"محصول مورد نظر یافت نشد!";
+                return RedirectToAction("Index");
+            }
+
+            db.Products.Remove(Entity);
+
+            var isOk = db.SaveChanges() > 0;
+
+            return Json(new { isOk = isOk }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CategoryPartial()
+        {
+            var categories = db.Categories.ToList();
+
+            return PartialView(categories);
+        }
+
+        public ActionResult CompanyPartial()
+        {
+            var companies = db.Companies.ToList();
+
+            return PartialView(companies);
+        }
+
+        public ActionResult CountryPartial()
+        {
+            var countries = db.Countries.ToList();
+
+            return PartialView(countries);
+        }
+
+        public ActionResult Details(int Id)
+        {
+            var Entity = db.Products.Find(Id);
+
+            return View(Entity);
         }
     }
 }

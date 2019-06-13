@@ -1,7 +1,39 @@
-﻿
+﻿@model ProdMVC.Models.Product
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "ویرایش محصول";
 }
 
-<h2>Edit</h2>
+<h2 style="font-family:SOGAND">ویرایش محصول</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.DisplayNameFor(x => x.CategoryId)
+        @Html.DropDownListFor(x => x.CategoryId, (SelectList)ViewBag.Categories, "نوع محصول را انتخاب کنید", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CategoryId)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.DisplayNameFor(x => x.CompanyId)
+        @Html.DropDownListFor(x => x.CompanyId, (SelectList)ViewBag.Companies, "سازنده محصول را انتخاب کنید", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CompanyId)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.DisplayNameFor(x => x.ModelName)
+        @Html.TextBoxFor(x => x.ModelName, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.ModelName)
+    </div>
+    <br />
+    <div class="form-group">
+        @Html.DisplayNameFor(x => x.Description)
+        @Html.TextBoxFor(x => x.Description, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Description)
+    </div>
+    <br />
+    <div class="form-group" style="font-family:SOGAND;">
+        <input type="submit" value="ثبت تغییرات" class="btn btn-primary" />
+        @Html.ActionLink("بازگشت به لیست محصولات", "Index", "Product", new { name = "" }, new { @class = "btn btn-info" })
+    </div>
+}
 

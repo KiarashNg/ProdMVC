@@ -1,0 +1,30 @@
+﻿@model ProdMVC.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 style="font-family:SOGAND">جزئیات محصول</h2>
+    <hr />
+
+<div class="display-label" style="font-family:SOGAND; font-size:medium"><i class="fas fa-chart-area"></i>    دسته بندی:</div>
+<div class="display-field">
+    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @Html.DisplayFor(model => model.Category.Name)
+</div>
+<div class="display-label" style="font-family:SOGAND; font-size:medium"><i class="far fa-building"></i>    شرکت تولیدکننده:</div>
+<div class="display-field">
+    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @Html.DisplayFor(model => model.Company.PersianName)
+</div>
+<div class="display-label" style="font-family:SOGAND; font-size:medium"><i class="fas fa-desktop"></i>    نام محصول:</div>
+<div class="display-field">
+    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @Html.DisplayFor(model => model.ModelName)
+</div>
+<div class="display-label" style="font-family:SOGAND; font-size:medium"><i class="fas fa-align-right"></i>    توضیحات:</div>
+<div class="display-field">
+    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp @Html.DisplayFor(model => model.Description)
+</div>
+<hr />
+<p style="font-family:SOGAND">
+    @Html.ActionLink("ویرایش محصول", "Edit", new { id = Model.Id }, new {@class = "btn btn-primary"})
+    @Html.ActionLink("بازگشت به لیست محصولات", "Index", "Product", new { name = ""}, new { @class = "btn btn-info"})
+</p>
